@@ -13,7 +13,14 @@
 		-moz-box-sizing: border-box;
 	}
 	
+	html,
+	body {
+		width: 100%;
+		height: 100%;
+	}
+	
 	#app {
+		height: 100%;
 		font-family: Avenir, Helvetica, Arial, sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
