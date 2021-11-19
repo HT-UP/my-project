@@ -24,7 +24,7 @@ module.exports = {
 		// 配置代理
 		proxy: {
 			"/api": {
-                target: 'https://chinanet.vvtech.tech/web/admin',  //测试
+                target: 'https://chinanet.vvtech.tech/tel_mgr',  //测试
 				changeOrigin: true, // 开启跨域,在本地创建一个虚拟服务,然后发送请求的数据,并同时接收请求的数据,这样服务端和服务端进行数据交互就不会有问题
 				pathRewrite(path, req) {
 					const ip = req.ip.match(/\d+\.\d+\.\d+\.\d+/)[0];
