@@ -12,7 +12,7 @@
 					</el-form-item>
 
 					<el-form-item>
-						<el-button class="login-btn" type="primary" @click="login('loginForm')">登 录</el-button>
+						<el-button class="login-btn" type="primary" :loading="loginLoading" @click="login('loginForm')">登 录</el-button>
 					</el-form-item>
 				</el-form>
 			</div>
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+	import store from '@/store';
+	
 	export default {
 		name: 'Login',
 		data() {
@@ -59,7 +61,9 @@
 						validator: validatePass,
 						trigger: 'blur'
 					}]
-				}
+				},
+				
+				loginLoading: false
 			}
 		},
 		methods: {
@@ -67,7 +71,26 @@
 			login(formName) {
 				this.$refs[formName].validate((valid) => {
 					if(valid) {
-						this.$message.success('登录成功');
+						this.loginLoading = true;
+						let params = {
+							username: this.loginForm.username,
+							password: this.loginForm.password
+						}
+						this.$postAjax('/account/login', params, '', res => {
+							if(res.status == 1) {
+								this.loginLoading = false;
+								store.commit('getToken', res.data);
+								localStorage.setItem('userName', this.loginForm.username);
+								this.$message.success('登录成功');
+								this.$router.replace('/home');
+							} else {
+								this.loginLoading = false;
+								this.$message.error(res.errorMsg);
+							}
+						}, (code, msg) => {
+							this.loginLoading = false;
+							this.$message.error(msg);
+						})
 					} else {
 						console.log('error submit!!');
 						return false;
