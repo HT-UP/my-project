@@ -7,6 +7,7 @@
 </template>
 
 <script>
+	import { getTelephoneCount, getTelephoneData } from '@/request/api';
 	// @ is an alias to /src
 	import HelloWorld from "@/components/HelloWorld.vue";
 
@@ -42,7 +43,40 @@
 //						this.$message.error(msg);
 //					})
 				}).catch(() => {});
+			},
+			
+			getCount(){
+				getTelephoneCount({}).then(res => {
+					if(res.status == 1) {
+						
+					} else {
+						this.$message.error(res.errorMsg);
+					}
+    			}).catch(err => {
+    				console.log(err);
+				});
+			},
+			
+			getTableData(){
+				let params = {
+					pageIndex: 0,
+					pageSize: 10
+				}
+				getTelephoneData(params).then(res => {
+					if(res.status == 1) {
+						
+					} else {
+						this.$message.error(res.errorMsg);
+					}
+    			}).catch(err => {
+    				console.log(err);
+				});
 			}
 		},
+		
+		mounted() {
+			this.getCount();
+			this.getTableData();
+		}
 	};
 </script>

@@ -2,10 +2,11 @@ import qs from 'qs';
 import axios from 'axios';
 import store from '@/store';
 import router from '@/router';
-import config from '../config/index';
+
+import {message} from '../assets/js/message';
 
 // 设置环境
-axios.defaults.baseURL = config.baseURL;
+axios.defaults.baseURL = process.env.VUE_APP_URL;
 // 设置请求超时
 axios.defaults.timeout = 3000000;
 // post请求头的设置
@@ -38,47 +39,40 @@ axios.interceptors.response.use(function (res) {
     return Promise.reject(error);
 });
 
-function getAjax(url,params,succCallBack,failCallBack) {
-	axios.get(url,{params:params})
-	.then(function (res) {
-	  if(res.data!=null){
-		  succCallBack(res.data);
-		}else{
-			failCallBack('-1', '系统繁忙，请稍后重试');
-		}
+//封装get和post方法
+export const get = (url, params) => {
+	return new Promise((resolve, reject) => {
+		axios.get(url, {params: params})
+			.then(res => {
+				resolve(res.data);
+			}, err => {
+				message.error("请求超时，请检查网络!");
+				reject(err);
+			}).catch(err => {
+				reject(err);
+			})
 	})
-	.catch(function (err) {
-	    console.log(err);
-	    failCallBack('-2', '请求超时，请检查网络');
-	});
-}
-function postAjax(url,params,contentType,succCallBack,failCallBack) {
-	if(contentType=='formData'){
+};
+
+export const post = (url, params, contentType) => {
+	if(contentType == 'formData'){
     	axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-	}else if(contentType=='json'){
+	}else if(contentType == 'json'){
     	axios.defaults.headers.post['Content-Type'] = 'application/json';
 	}else{
     	axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 		params = qs.stringify(params);
 	}
-	axios.post(url, params)
-	.then(function (res) {
-	    if(res.data!=null){
-		    succCallBack(res.data);
-		}else{
-			failCallBack('-1', '系统繁忙，请稍后重试');
-		}
+	return new Promise((resolve, reject) => {
+		axios.post(url, params)
+			.then(res => {
+				resolve(res.data);
+			}, err => {
+				message.error("请求超时，请检查网络!");
+				reject(err);
+			}).catch(err => {
+				reject(err);
+			})
 	})
-	.catch(function (err) {
-	    console.log(err);
-	   	failCallBack('-2', '请求超时，请检查网络');
-	});
-}
+};
 
-let request = {
-	getAjax:getAjax,
-	postAjax:postAjax,
-}
-export{
-	request
-}

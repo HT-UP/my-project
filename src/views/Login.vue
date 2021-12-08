@@ -22,6 +22,7 @@
 
 <script>
 	import store from '@/store';
+	import { login } from '@/request/api';
 	
 	export default {
 		name: 'Login',
@@ -76,7 +77,7 @@
 							username: this.loginForm.username,
 							password: this.loginForm.password
 						}
-						this.$postAjax('/account/login', params, '', res => {
+						login(params).then(res => {
 							if(res.status == 1) {
 								this.loginLoading = false;
 								store.commit('getToken', res.data);
@@ -87,10 +88,10 @@
 								this.loginLoading = false;
 								this.$message.error(res.errorMsg);
 							}
-						}, (code, msg) => {
+            			}).catch(err => {
+            				console.log(err);
 							this.loginLoading = false;
-							this.$message.error(msg);
-						})
+						});
 					} else {
 						console.log('error submit!!');
 						return false;
