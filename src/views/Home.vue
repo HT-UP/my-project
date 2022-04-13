@@ -12,13 +12,12 @@
 	import HelloWorld from "@/components/HelloWorld.vue";
 
 	export default {
-		name: "Home",
 		components: {
 			HelloWorld,
 		},
 		data() {
 			return {
-				
+
 			}
 		},
 		methods: {
@@ -27,53 +26,52 @@
 					localStorage.clear();
 					this.$message.success('已退出登录');
 					this.$router.push('/login');
-							
-//					let params = {
-//						token: localStorage.getItem('Authorization')
-//					}
-//					this.$postAjax('/subscriber/logout', params, '', res => {
-//						if(res.status == 1) {
-//							localStorage.clear();
-//							this.$message.success('已退出登录');
-//							this.$router.push('/login');
-//						} else {
-//							this.$message.error(res.errorMsg);
-//						}
-//					}, (code, msg) => {
-//						this.$message.error(msg);
-//					})
+
+					//					let params = {
+					//						token: localStorage.getItem('Authorization')
+					//					}
+					//					this.$postAjax('/subscriber/logout', params, '', res => {
+					//						if(res.status == 1) {
+					//							localStorage.clear();
+					//							this.$message.success('已退出登录');
+					//							this.$router.push('/login');
+					//						} else {
+					//							this.$message.error(res.errorMsg);
+					//						}
+					//					}, (code, msg) => {
+					//						this.$message.error(msg);
+					//					})
 				}).catch(() => {});
 			},
-			
-			getCount(){
-				getTelephoneCount({}).then(res => {
-					if(res.status == 1) {
-						
-					} else {
-						this.$message.error(res.errorMsg);
-					}
-    			}).catch(err => {
-    				console.log(err);
-				});
-			},
-			
-			getTableData(){
-				let params = {
-					pageIndex: 1,
-					pageSize: 10
+
+			async getCount() {
+				try {
+					let res = await getTelephoneCount();
+					console.log(res);
+				} catch(error) {
+
+				} finally {
+
 				}
-				getTelephoneData(params).then(res => {
-					if(res.status == 1) {
-						
-					} else {
-						this.$message.error(res.errorMsg);
+			},
+
+			async getTableData() {
+				try {
+					let params = {
+						pageIndex: 1,
+						pageSize: 10
 					}
-    			}).catch(err => {
-    				console.log(err);
-				});
+
+					let res = await getTelephoneData(params);
+					console.log(res);
+				} catch(error) {
+
+				} finally {
+
+				}
 			}
 		},
-		
+
 		mounted() {
 			this.getCount();
 			this.getTableData();

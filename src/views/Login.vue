@@ -25,7 +25,6 @@
 	import { login } from '@/request/api';
 	
 	export default {
-		name: 'Login',
 		data() {
 			var validateName = (rule, value, callback) => {
 				if(value === '') {
@@ -70,28 +69,25 @@
 		methods: {
 			//登录
 			login() {
-				this.$refs['loginForm'].validate((valid) => {
+				this.$refs['loginForm'].validate(async(valid) => {
 					if(valid) {
 						this.loginLoading = true;
-						let params = {
-							username: this.loginForm.username,
-							password: this.loginForm.password
-						}
-						login(params).then(res => {
-							if(res.status == 1) {
-								this.loginLoading = false;
-								store.commit('getToken', res.data);
-								localStorage.setItem('userName', this.loginForm.username);
-								this.$message.success('登录成功');
-								this.$router.replace('/home');
-							} else {
-								this.loginLoading = false;
-								this.$message.error(res.errorMsg);
+						try {
+							let params = {
+								username: this.loginForm.username,
+								password: this.loginForm.password
 							}
-            			}).catch(err => {
-            				console.log(err);
+							let res = await login(params);
+							
+							store.commit('getToken', res.data);
+							localStorage.setItem('userName', this.loginForm.username);
+							this.$message.success('登录成功');
+							this.$router.replace('/home');
+						} catch(error) {
+							console.log(error);
+						} finally {
 							this.loginLoading = false;
-						});
+						}
 					} else {
 						console.log('error submit!!');
 						return false;
