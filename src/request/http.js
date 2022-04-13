@@ -13,7 +13,7 @@ axios.defaults.timeout = 3000000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'; //form表单数据
 
 // 添加请求拦截器
-axios.interceptors.request.use(function (requestConfig) {
+axios.interceptors.request.use((requestConfig) => {
     // 在发送请求之前做些什么
    	// 每次发送请求之前判断vuex中是否存在token
     // 如果存在，则统一在http请求的header都加上token，这样后台根据token判断你的登录情况
@@ -23,18 +23,18 @@ axios.interceptors.request.use(function (requestConfig) {
     	token && (requestConfig.headers.token = token);
     }
     return requestConfig;
-  }, function (error) {
+  }, (error) => {
     // 对请求错误做些什么
     return Promise.reject(error);
   });
 // 添加响应拦截器
-axios.interceptors.response.use(function (res) {
+axios.interceptors.response.use((res) => {
     // 对响应数据做点什么
     if(res.data.errorCode == '080006' || res.data.errorCode == '080007' || res.data.errorCode == '080008'){
     	router.push('/login');
     }
     return res;
-  }, function (error) {
+  }, (error) => {
     // 对响应错误做点什么
     return Promise.reject(error);
 });

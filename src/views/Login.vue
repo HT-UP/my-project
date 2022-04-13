@@ -12,7 +12,7 @@
 					</el-form-item>
 
 					<el-form-item>
-						<el-button class="login-btn" type="primary" :loading="loginLoading" @click="login('loginForm')">登 录</el-button>
+						<el-button class="login-btn" type="primary" :loading="loginLoading" @click="login">登 录</el-button>
 					</el-form-item>
 				</el-form>
 			</div>
@@ -69,8 +69,8 @@
 		},
 		methods: {
 			//登录
-			login(formName) {
-				this.$refs[formName].validate((valid) => {
+			login() {
+				this.$refs['loginForm'].validate((valid) => {
 					if(valid) {
 						this.loginLoading = true;
 						let params = {
