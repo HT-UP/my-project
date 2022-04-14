@@ -25,4 +25,8 @@
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
+	
+	.el-table__body .el-table__row {
+		height: 60px;
+	}
 </style>

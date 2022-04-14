@@ -11,6 +11,9 @@ import {
 	Button,
 	Loading,
 	MessageBox,
+	Table,
+	Pagination,
+	TableColumn
 } from 'element-ui';
 
 import {message} from './assets/js/message';
@@ -19,6 +22,9 @@ Vue.use(Input);
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Button);
+Vue.use(Table);
+Vue.use(Pagination);
+Vue.use(TableColumn);
 Vue.use(Loading.directive);
 
 Vue.prototype.$message = message;
